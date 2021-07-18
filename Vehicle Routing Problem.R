@@ -10,7 +10,7 @@ library(ROI)
 library(ROI.plugin.symphony)
 library(ompr)
 library(ompr.roi)
-library(ggplot2)
+
 
 #Set coordinates
 xPos <- c(50, 91.96597675, 4.429534833, 70.62278085, 36.3491225, 20.25312943, 65.01756495, 80.47269263, 44.25742111, 55.37454121, 90.76322566, 90.20079397, 30.9490321, 89.52208309, 81.66672711, 17, 87.27887171, 83.6627887, 96.89989373, 59.63776655, 71.83902707, 92.31240214, 73.08969445, 21.40806172, 11.83393172, 6.887087363, 43.32531433, 86.01225057, 26.93871206, 29.06518566, 7.4)
@@ -59,6 +59,13 @@ Model <- MIPModel() %>%
   add_constraint(sum_expr(f[j, i] - f[i, j], j = 1:n) == d[i], i = 2:n) %>%
   add_constraint(f[i, j] <= C*x[i, j], i = 1:n, j = 1:n) %>%
   solve_model(with_ROI(solver = "symphony", verbosity = 1))
+
+#Model summary
+##Status
+print(paste("Model status is:", Model$status))
+
+##Objective Function
+print(paste("Objective value:", objective_value(Model)))
 
 #Variables
 for (a in 1:n) {
